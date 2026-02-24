@@ -48,10 +48,31 @@ end
 
 # Usage
 API_KEY = ENV['TMDB_API_KEY']
+
+if API_KEY.nil? || API_KEY.empty?
+  puts "Error: TMDB_API_KEY is missing. Please check your .env file."
+  exit
+end
+
 client = Estihis.new(API_KEY)
 
-# Fetch top rated
-client.get_top_rated
+puts "====================================="
+puts "  Welcome to Estihis Movie Search!   "
+puts "====================================="
 
-# Search for a specific movie
-client.search_movie("The Matrix")
+loop do
+  print "\nEnter a movie title to search (or type 'exit' to quit): "
+  user_input = gets.chomp
+
+  # Stop the loop if the user types 'exit'
+  break if user_input.downcase == 'exit'
+
+  # Check if the user just pressed enter without typing anything
+  if user_input.strip.empty?
+    puts "Please enter a valid movie name."
+  else
+    client.search_movie(user_input)
+  end
+end
+
+puts "\nThanks for using Estihis!"
